@@ -4,17 +4,18 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static final int ROWS = 5;
-    public static final int COLUMNS = 5;
+    public static final int ROWS = 10;
+    public static final int COLUMNS = 20;
     public static int[][] seatingArrangements = new int[ROWS][COLUMNS];
 
     public static void main(String[] args) {
-
-        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readData();
+        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readFromFile();
+//        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readData();
         RowsStatus[] rows = new RowsStatus[ROWS];
         setSeatingArrangements(requests, rows);
         printSeatAllotment();
         FileReaderAndWriter.printOutput(requests);
+        FileReaderAndWriter.writeOutputToFile(requests);
     }
 
     private static void setSeatingArrangements(ArrayList<ReservationRequest> requests, RowsStatus[] rows) {

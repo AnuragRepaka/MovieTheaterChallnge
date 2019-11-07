@@ -18,6 +18,21 @@ public class Seat {
         map.put(8, "I");
         map.put(9, "J");
         map.put(10, "K");
+        map.put(11, "L");
+        map.put(12, "M");
+        map.put(13, "N");
+        map.put(14, "O");
+        map.put(15, "P");
+        map.put(16, "Q");
+        map.put(17, "R");
+        map.put(18, "S");
+        map.put(19, "T");
+        map.put(20, "U");
+        map.put(21, "V");
+        map.put(22, "W");
+        map.put(23, "X");
+        map.put(24, "Y");
+        map.put(25, "Z");
     }
 
     private String startAlphabet;
