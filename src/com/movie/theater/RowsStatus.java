@@ -1,10 +1,12 @@
 package com.movie.theater;
 
 public class RowsStatus {
-    private int remainingSeats = Main.COLUMNS;
-    private int startAllocPosition = 0;
+    private int remainingSeats;
+    private int startAllocPosition;
 
     public RowsStatus() {
+        remainingSeats = Main.COLUMNS;
+        startAllocPosition = 0;
     }
 
     public int getRemainingSeats() {
@@ -15,7 +17,7 @@ public class RowsStatus {
         this.remainingSeats = remainingSeats;
     }
 
-    public int getStartAllocPosition() {
+    public int getEmptyPosition() {
         return startAllocPosition;
     }
 
@@ -23,7 +25,7 @@ public class RowsStatus {
         this.startAllocPosition = startAllocPosition;
     }
 
-    public void incrementStartAllocPos() {
+    public void updateEmptyPosition() {
         this.startAllocPosition = this.startAllocPosition + 1;
     }
 

@@ -9,6 +9,10 @@ public class Main {
     public static int[][] seatingArrangements = new int[ROWS][COLUMNS];
 
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Input file path is not given, has to be passed as an argument");
+            return;
+        }
         String filePath = args[0];
         ArrayList<ReservationRequest> requests = FileReaderAndWriter.readFromFile(filePath);
 //        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readData();
@@ -26,8 +30,13 @@ public class Main {
         //if remaining > requested ...update 2d array, update rows array, update seat for request
         //else iterate through next row near to screen
         //else (continuous failed) assign to max remaining seats row & recursively.
-
+        int totalSeatsOccupied = 0;
+        int maxSeatsCanBeOccupied = Main.ROWS * Main.COLUMNS;
         for (ReservationRequest request : requests) {
+            if (maxSeatsCanBeOccupied < totalSeatsOccupied + request.getNoOfRequestedSeats()) {
+                continue;
+            }
+
             boolean isSeatsAllocated = false;
             for (int i = ROWS - 1; i >= 0; i--) {
                 if (rows[i] == null) {
@@ -36,9 +45,9 @@ public class Main {
                 if (rows[i].getRemainingSeats() >= request.getNoOfRequestedSeats()) {
                     int count = request.getNoOfRequestedSeats();
                     while (count > 0) {
-                        int pos = rows[i].getStartAllocPosition();
+                        int pos = rows[i].getEmptyPosition();
                         seatingArrangements[i][pos] = 1;
-                        rows[i].incrementStartAllocPos();
+                        rows[i].updateEmptyPosition();
                         rows[i].decrementRemainingSeats();
                         Seat s = new Seat();
                         s.setStartAlphabet(Seat.getMap().get(i));
@@ -58,20 +67,24 @@ public class Main {
                 //  else set isSeatsAllocated to true
 
                 int maxRemainingSeatsRowIndex = 0, secondMaxRemainingRowIndex = 0;
-                for (int i = ROWS - 1; i >= 0; i--) {
-                    if (rows[i].getRemainingSeats() > maxRemainingSeatsRowIndex) {
+                int maxSeats = rows[ROWS - 1].getRemainingSeats();
+                int secondMaxSeats = maxSeats;
+                for (int i = ROWS - 2; i >= 0; i--) {
+                    if (rows[i].getRemainingSeats() > maxSeats) {
+                        secondMaxSeats = maxSeats;
+                        maxSeats = rows[i].getRemainingSeats();
                         secondMaxRemainingRowIndex = maxRemainingSeatsRowIndex;
                         maxRemainingSeatsRowIndex = i;
-                    } else if (rows[i].getRemainingSeats() > secondMaxRemainingRowIndex) {
+                    } else if (rows[i].getRemainingSeats() > secondMaxSeats) {
                         secondMaxRemainingRowIndex = i;
+                        secondMaxSeats = rows[i].getRemainingSeats();
                     }
                 }
 
-
                 while (seatsTobeFilled > 0 && rows[maxRemainingSeatsRowIndex].getRemainingSeats() > 0) {
-                    int pos = rows[maxRemainingSeatsRowIndex].getStartAllocPosition();
+                    int pos = rows[maxRemainingSeatsRowIndex].getEmptyPosition();
                     seatingArrangements[maxRemainingSeatsRowIndex][pos] = 1;
-                    rows[maxRemainingSeatsRowIndex].incrementStartAllocPos();
+                    rows[maxRemainingSeatsRowIndex].updateEmptyPosition();
                     rows[maxRemainingSeatsRowIndex].decrementRemainingSeats();
                     Seat s = new Seat();
                     s.setStartAlphabet(Seat.getMap().get(maxRemainingSeatsRowIndex));
@@ -81,9 +94,9 @@ public class Main {
                 }
 
                 while (seatsTobeFilled > 0 && rows[secondMaxRemainingRowIndex].getRemainingSeats() > 0) {
-                    int pos = rows[secondMaxRemainingRowIndex].getStartAllocPosition();
+                    int pos = rows[secondMaxRemainingRowIndex].getEmptyPosition();
                     seatingArrangements[secondMaxRemainingRowIndex][pos] = 1;
-                    rows[secondMaxRemainingRowIndex].incrementStartAllocPos();
+                    rows[secondMaxRemainingRowIndex].updateEmptyPosition();
                     rows[secondMaxRemainingRowIndex].decrementRemainingSeats();
                     Seat s = new Seat();
                     s.setStartAlphabet(Seat.getMap().get(secondMaxRemainingRowIndex));
@@ -96,6 +109,7 @@ public class Main {
                     isSeatsAllocated = true;
                 }
             }
+            totalSeatsOccupied = totalSeatsOccupied + request.getNoOfRequestedSeats();
         }
     }
 
