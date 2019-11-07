@@ -7,7 +7,7 @@ import java.util.Random;
 public class FileReaderAndWriter {
     static File inputFile;
 
-    public static ArrayList<ReservationRequest> readFromFile() {
+    public static ArrayList<ReservationRequest> readFromFile(String inputFilePath) {
         ArrayList<ReservationRequest> temp = new ArrayList<>();
         int sum = 0;
         int limit = Main.ROWS * Main.COLUMNS - (Main.COLUMNS);
@@ -38,7 +38,7 @@ public class FileReaderAndWriter {
         }
 
         System.out.println(builder.toString());
-        inputFile = new File("input.txt");
+        inputFile = new File(inputFilePath);
         try {
             Writer writer = new BufferedWriter(new FileWriter(inputFile));
             writer.write(builder.toString());
@@ -86,7 +86,7 @@ public class FileReaderAndWriter {
         }
     }
 
-    public static void writeOutputToFile(ArrayList<ReservationRequest> requests) {
+    public static String writeOutputToFile(ArrayList<ReservationRequest> requests) {
 
         try {
             String input = inputFile.getAbsolutePath().split("/")[inputFile.getAbsolutePath().split("/").length - 1];
@@ -104,8 +104,10 @@ public class FileReaderAndWriter {
                 writer.write("\n");
             }
             writer.close();
+            return output;
         } catch (Exception e) {
             e.printStackTrace();
+            return "";
         }
     }
 

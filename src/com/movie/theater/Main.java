@@ -9,13 +9,14 @@ public class Main {
     public static int[][] seatingArrangements = new int[ROWS][COLUMNS];
 
     public static void main(String[] args) {
-        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readFromFile();
+        String filePath = args[0];
+        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readFromFile(filePath);
 //        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readData();
         RowsStatus[] rows = new RowsStatus[ROWS];
         setSeatingArrangements(requests, rows);
         printSeatAllotment();
         FileReaderAndWriter.printOutput(requests);
-        FileReaderAndWriter.writeOutputToFile(requests);
+        System.out.println(FileReaderAndWriter.writeOutputToFile(requests));
     }
 
     private static void setSeatingArrangements(ArrayList<ReservationRequest> requests, RowsStatus[] rows) {
