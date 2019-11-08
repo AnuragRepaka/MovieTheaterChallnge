@@ -3,7 +3,7 @@ package com.movie.theater;
 import java.util.ArrayList;
 
 public class ReservationRequest {
-    ArrayList<Seat> allocatedSeatsList = new ArrayList<>();
+    ArrayList<Seat> allocatedSeatsList = new ArrayList<Seat>();
     private String id;
     private int noOfRequestedSeats;
 
@@ -22,5 +22,9 @@ public class ReservationRequest {
 
     public String getId() {
         return id;
+    }
+
+    public ArrayList<Seat> getAllocatedSeatsList() {
+        return allocatedSeatsList;
     }
 }

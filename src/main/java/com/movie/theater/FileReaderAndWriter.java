@@ -8,7 +8,7 @@ public class FileReaderAndWriter {
     static File inputFile;
 
     public static ArrayList<ReservationRequest> readFromFile(String inputFilePath) {
-        ArrayList<ReservationRequest> transactionsList = new ArrayList<>();
+        ArrayList<ReservationRequest> transactionsList = new ArrayList<ReservationRequest>();
         inputFile = new File(inputFilePath);
         writeRandomInputSeatingsToFile();
         try {
@@ -30,7 +30,7 @@ public class FileReaderAndWriter {
         return transactionsList;
     }
 
-    private static boolean isValidData(String line) {
+    public static boolean isValidData(String line) {
         if (line.trim().isEmpty()) {
             return false;
         }
@@ -96,15 +96,15 @@ public class FileReaderAndWriter {
 
     //temp code
     public static ArrayList<ReservationRequest> readData() {
-        ArrayList<ReservationRequest> temp = new ArrayList<>();
-        temp.add(new ReservationRequest("R001", 10));
-        temp.add(new ReservationRequest("R002", 2));
-        temp.add(new ReservationRequest("R003", 4));
-        temp.add(new ReservationRequest("R004", 3));
-        temp.add(new ReservationRequest("R005", 2));
-        temp.add(new ReservationRequest("R006", 1));
-        temp.add(new ReservationRequest("R007", 4));
-        temp.add(new ReservationRequest("R008", 2));
+        ArrayList<ReservationRequest> temp = new ArrayList<ReservationRequest>();
+        temp.add(new ReservationRequest("R001", 24));
+//        temp.add(new ReservationRequest("R002", 2));
+//        temp.add(new ReservationRequest("R003", 4));
+//        temp.add(new ReservationRequest("R004", 3));
+//        temp.add(new ReservationRequest("R005", 2));
+//        temp.add(new ReservationRequest("R006", 1));
+//        temp.add(new ReservationRequest("R007", 4));
+//        temp.add(new ReservationRequest("R008", 2));
         return temp;
     }
 

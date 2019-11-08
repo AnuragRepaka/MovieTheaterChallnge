@@ -13,7 +13,7 @@ Sitting together is the first preference of customers
 Back to front rows is the order of preference for customers.
 Seating given in the order of reservation request received.
 No partial seat allotment in a single reservation request.
-
+//allocation of larger blocks in partial
 
 Commands for building solution:
 Execute in the folder that contains java files:  javac -d . *.java
@@ -21,3 +21,5 @@ java com.movie.theater.Main /home/anurag/WorkSpace/MovieTheaterChallnge/input.tx
 
 Commands for executing the tests:
 
+
+//change to md format

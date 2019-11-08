@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Seat {
 
-    private static HashMap<Integer, String> map = new HashMap<>();
+    private static HashMap<Integer, String> map = new HashMap<Integer, String>();
 
     static {
         map.put(0, "A");
@@ -37,6 +37,11 @@ public class Seat {
 
     private String startAlphabet;
     private int column;
+
+    Seat(String startAlphabet, int column) {
+        this.startAlphabet = startAlphabet;
+        this.column = column;
+    }
 
     public static HashMap<Integer, String> getMap() {
         return map;
