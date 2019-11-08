@@ -57,8 +57,8 @@ public class FileReaderAndWriter {
         Random random = new Random();
         int counter = 1;
         while (counter < 9999) {
-            int r = random.nextInt(Main.COLUMNS) + 1;
-            //remove r for crossing the limit
+            int r = random.nextInt(Main.COLUMNS) + 5;   //more than row length
+            //remove r for crossing the limit, seating capacity > requested seats
             if (sum + r > limit) {
                 break;
             }
@@ -97,7 +97,7 @@ public class FileReaderAndWriter {
     //temp code
     public static ArrayList<ReservationRequest> readData() {
         ArrayList<ReservationRequest> temp = new ArrayList<>();
-        temp.add(new ReservationRequest("R001", 17));
+        temp.add(new ReservationRequest("R001", 10));
         temp.add(new ReservationRequest("R002", 2));
         temp.add(new ReservationRequest("R003", 4));
         temp.add(new ReservationRequest("R004", 3));
