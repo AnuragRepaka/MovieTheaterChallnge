@@ -4,6 +4,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * FileReaderAndWriter --- It contains methods that reads reservation requests from input file, generate random input data,
+ * validates the input data and write to output file.
+ *
+ * @author anurag repaka
+ */
+
 public class FileReaderAndWriter {
     static File inputFile;
 
@@ -15,7 +22,6 @@ public class FileReaderAndWriter {
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             String line = "";
             while ((line = reader.readLine()) != null) {
-                //System.out.println(line);
                 if (!isValidData(line)) {
                     continue;
                 }
@@ -32,19 +38,22 @@ public class FileReaderAndWriter {
 
     public static boolean isValidData(String line) {
         if (line.trim().isEmpty()) {
+            //validates white spaces and empty input
             return false;
         }
         String[] data = line.split(" ");
         if (data.length != 2) {
+            //validates invalid input length
             return false;
         }
         try {
             int value = Integer.parseInt(data[1]);
             if (value <= 0) {
+                //validates negative numbers
                 return false;
             }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            //validates the datatype of input other than int.
             return false;
         }
         return true;
@@ -84,7 +93,7 @@ public class FileReaderAndWriter {
 
     private static void writeRandomInputSeatingsToFile() {
         String inputText = randomInputGenerator();
-        System.out.println(inputText);
+        //System.out.println(inputText);
         try {
             Writer writer = new BufferedWriter(new FileWriter(inputFile));
             writer.write(inputText);
@@ -94,17 +103,18 @@ public class FileReaderAndWriter {
         }
     }
 
-    //temp code
+    //temp data
     public static ArrayList<ReservationRequest> readData() {
         ArrayList<ReservationRequest> temp = new ArrayList<ReservationRequest>();
-        temp.add(new ReservationRequest("R001", 24));
-//        temp.add(new ReservationRequest("R002", 2));
-//        temp.add(new ReservationRequest("R003", 4));
-//        temp.add(new ReservationRequest("R004", 3));
-//        temp.add(new ReservationRequest("R005", 2));
-//        temp.add(new ReservationRequest("R006", 1));
-//        temp.add(new ReservationRequest("R007", 4));
-//        temp.add(new ReservationRequest("R008", 2));
+        temp.add(new ReservationRequest("R001", 25));
+        temp.add(new ReservationRequest("R002", 12));
+        temp.add(new ReservationRequest("R003", 40));
+        temp.add(new ReservationRequest("R004", 32));
+        temp.add(new ReservationRequest("R005", 26));
+        temp.add(new ReservationRequest("R006", 12));
+        temp.add(new ReservationRequest("R007", 48));//195
+        temp.add(new ReservationRequest("R008", 25));
+        temp.add(new ReservationRequest("R009", 3));
         return temp;
     }
 

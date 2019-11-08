@@ -7,7 +7,16 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test case class for Main.java
+ *
+ * @author anurag repaka
+ */
 public class MainTest {
+
+    /*
+     * Maximum rows in theater is 26.
+     * */
 
     @Test
     public void rowsInTheaterLesserThanTwentySixTest() {
@@ -68,11 +77,9 @@ public class MainTest {
         }
     }
 
-
     /*
-    documentation
-
-     */
+     * Sitting together is the first preference of customers
+     * */
 
     @Test
     public void allocateSeatsTogetherPriorityTest() {
@@ -116,6 +123,10 @@ public class MainTest {
         }
     }
 
+    /*
+     * No partial seat allotment in a single reservation request.
+     * */
+
     @Test
     public void noPartialSeatAllocationToSingleRequestTest() {
         ReservationRequest request1 = new ReservationRequest("R0001", 25);
@@ -141,18 +152,22 @@ public class MainTest {
         Assert.assertTrue(request8.getAllocatedSeatsList().isEmpty());
     }
 
+    /*
+     * In case all the requested seats could not be allocated in single row, then assign seats in a largest seats available row.
+     * */
+
     @Test
     public void allocateSeatsToLargestAvailableGroupOfSeatsTest() {
         ReservationRequest request1 = new ReservationRequest("R0001", 15);
         ReservationRequest request2 = new ReservationRequest("R0002", 16);
-        ReservationRequest request3 = new ReservationRequest("R0003", 12);
+        ReservationRequest request3 = new ReservationRequest("R0003", 12);  //request 11 will be allocated here
         ReservationRequest request4 = new ReservationRequest("R0004", 15);
         ReservationRequest request5 = new ReservationRequest("R0005", 18);
         ReservationRequest request6 = new ReservationRequest("R0006", 19);
         ReservationRequest request7 = new ReservationRequest("R0007", 20);
-        ReservationRequest request8 = new ReservationRequest("R0008", 12);
+        ReservationRequest request8 = new ReservationRequest("R0008", 12);  // request 12 will be allocated here
         ReservationRequest request9 = new ReservationRequest("R0009", 10);
-        ReservationRequest request10 = new ReservationRequest("R0010", 15);
+        ReservationRequest request10 = new ReservationRequest("R0010", 15); //no allocation to this request
         ReservationRequest request11 = new ReservationRequest("R0011", 6);
         ReservationRequest request12 = new ReservationRequest("R0012", 7);
         ArrayList<ReservationRequest> list = new ArrayList<ReservationRequest>();
@@ -206,12 +221,12 @@ public class MainTest {
         ReservationRequest request6 = new ReservationRequest("R0006", 25);
         ReservationRequest request7 = new ReservationRequest("R0007", 35);
         ReservationRequest request8 = new ReservationRequest("R0008", 15);
-        ReservationRequest request9 = new ReservationRequest("R0009", 5);//190
-        ReservationRequest request10 = new ReservationRequest("R0009", 4);
+        ReservationRequest request9 = new ReservationRequest("R0009", 5);
+        ReservationRequest request10 = new ReservationRequest("R0009", 4);  //194
         ReservationRequest request11 = new ReservationRequest("R0009", 12);
         ReservationRequest request12 = new ReservationRequest("R0009", 2);
         ReservationRequest request13 = new ReservationRequest("R0009", 5);
-        ReservationRequest request14 = new ReservationRequest("R0009", 4);//200
+        ReservationRequest request14 = new ReservationRequest("R0009", 4);  //200
         ReservationRequest request15 = new ReservationRequest("R0009", 4);
         ReservationRequest request16 = new ReservationRequest("R0009", 4);
         ArrayList<ReservationRequest> list = new ArrayList<ReservationRequest>();

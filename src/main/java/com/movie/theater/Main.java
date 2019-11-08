@@ -6,15 +6,15 @@ import java.util.ArrayList;
  * Main --- Main class, which handles logic of reading reservation requests from input file,
  * theater seating allotment and writing to output file.
  *
- * @author anurag
+ * @author anurag repaka
  */
 public class Main {
 
-    public static final int ROWS = 10;
-    public static final int COLUMNS = 20;
-    public static String[][] seatingArrangements = new String[ROWS][COLUMNS];
-    public static RowsStatus[] rows = new RowsStatus[ROWS];
-    public static boolean theaterCompletelyOccupied = false;
+    static final int ROWS = 10;
+    static final int COLUMNS = 20;
+    static boolean theaterCompletelyOccupied = false;
+    private static String[][] seatingArrangements = new String[ROWS][COLUMNS];
+    private static RowsStatus[] rows = new RowsStatus[ROWS];
 
     public static void main(String[] args) {
 
@@ -26,10 +26,7 @@ public class Main {
         String filePath = args[0];
         /* Reads reservation requests data from file */
         ArrayList<ReservationRequest> requests = FileReaderAndWriter.readFromFile(filePath);
-//        ArrayList<ReservationRequest> requests = FileReaderAndWriter.readData();
         setSeatingArrangements(requests);
-        printSeatAllotment();
-        FileReaderAndWriter.printOutput(requests);
         System.out.println(FileReaderAndWriter.writeOutputToFile(requests));
     }
 
@@ -38,37 +35,38 @@ public class Main {
             rows[i] = new RowsStatus();
     }
 
+    /**
+     * Handles the logic of assigning seats within a movie theater to reservation requests.
+     *
+     * @param requests reference to list of input reservation requests
+     */
     public static void setSeatingArrangements(ArrayList<ReservationRequest> requests) {
 
-        //for each request
-        //check rows no of remaining seats from last,
-        //if remaining > requested ...update 2d array, update rows array, update seat for request
-        //else iterate through next row near to screen
-        //else (continuous failed) assign to max remaining seats row & recursively.
-        int totalSeatsOccupied = 0;
+        int totalSeatsOccupied = 0;     //counter for number of seats allocated
         int maxSeatsCanBeOccupied = Main.ROWS * Main.COLUMNS;
-        initializeRows();
+        initializeRows();           //initialize the theater rows with default remaining seats
         for (ReservationRequest request : requests) {
+            //Each reservation request executed in the order it is received
             if (maxSeatsCanBeOccupied == totalSeatsOccupied) {
+                //if theater is 100% utilized, then it is not required to process pending requests.
                 theaterCompletelyOccupied = true;
                 break;
             } else if (maxSeatsCanBeOccupied < totalSeatsOccupied + request.getNoOfRequestedSeats()) {
+                //According to my assumption, no partial seat allocation to a single reservation request.
                 continue;
             }
             boolean isSeatsAllocated = false;
-            if (request.getNoOfRequestedSeats() <= Main.COLUMNS) {  //full group assignment
-                for (int i = ROWS - 1; i >= 0; i--) {
+            if (request.getNoOfRequestedSeats() <= Main.COLUMNS) {
+                //if the requested seats are less than row length, then can assign the whole group in a single row.
+                for (int i = ROWS - 1; i >= 0; i--) {   //start from back row
                     if (rows[i].getRemainingSeats() >= request.getNoOfRequestedSeats()) {
                         int count = request.getNoOfRequestedSeats();
                         while (count > 0) {
                             int pos = rows[i].getEmptyPosition();
                             Seat s = new Seat(Seat.getMap().get(i), pos + 1);
-//                            s.setStartAlphabet(Seat.getMap().get(i));
-//                            s.setColumn(pos + 1);
                             seatingArrangements[i][pos] = s.toString();
                             rows[i].updateEmptyPosition();
                             rows[i].decrementRemainingSeats();
-
                             request.addSeat(s);
                             count--;
                         }
@@ -78,11 +76,12 @@ public class Main {
                 }
             }
             int seatsTobeFilled = request.getNoOfRequestedSeats();
-            while (!isSeatsAllocated) {     //partial gp assignment
-                //partial allotment
-                //find max, second max remaining seats rows.
-                //fill them, if requestedseats != 0, then find again max & second max
-                //  else set isSeatsAllocated to true
+            while (!isSeatsAllocated) {
+                /*
+                 * find the largest and second largest available seats in the rows. Allocate requested seats
+                 * in these rows. If all the requested seats are not allocated, then repeat the process.
+                 * */
+
                 int maxRemainingSeatsRowIndex = ROWS - 1, secondMaxRemainingRowIndex = ROWS - 1;
                 int maxSeats = rows[ROWS - 1].getRemainingSeats();
                 int secondMaxSeats = maxSeats;
@@ -101,12 +100,9 @@ public class Main {
                 while (seatsTobeFilled > 0 && rows[maxRemainingSeatsRowIndex].getRemainingSeats() > 0) {
                     int pos = rows[maxRemainingSeatsRowIndex].getEmptyPosition();
                     Seat s = new Seat(Seat.getMap().get(maxRemainingSeatsRowIndex), pos + 1);
-//                    s.setStartAlphabet(Seat.getMap().get(maxRemainingSeatsRowIndex));
-//                    s.setColumn(pos + 1);
                     seatingArrangements[maxRemainingSeatsRowIndex][pos] = s.toString();
                     rows[maxRemainingSeatsRowIndex].updateEmptyPosition();
                     rows[maxRemainingSeatsRowIndex].decrementRemainingSeats();
-
                     request.addSeat(s);
                     seatsTobeFilled--;
                 }
@@ -114,16 +110,14 @@ public class Main {
                 while (seatsTobeFilled > 0 && rows[secondMaxRemainingRowIndex].getRemainingSeats() > 0) {
                     int pos = rows[secondMaxRemainingRowIndex].getEmptyPosition();
                     Seat s = new Seat(Seat.getMap().get(secondMaxRemainingRowIndex), pos + 1);
-//                    s.setStartAlphabet(Seat.getMap().get(secondMaxRemainingRowIndex));
-//                    s.setColumn(pos + 1);
                     seatingArrangements[secondMaxRemainingRowIndex][pos] = s.toString();
                     rows[secondMaxRemainingRowIndex].updateEmptyPosition();
                     rows[secondMaxRemainingRowIndex].decrementRemainingSeats();
-
                     request.addSeat(s);
                     seatsTobeFilled--;
                 }
                 if (seatsTobeFilled == 0) {
+                    //All requested seats are allocated
                     isSeatsAllocated = true;
                 }
             }

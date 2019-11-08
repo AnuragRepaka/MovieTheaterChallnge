@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 
+/**
+ * Input validator test class
+ *
+ * @author anurag repaka
+ */
 public class FileReaderAndWriterTest {
 
     @Test
